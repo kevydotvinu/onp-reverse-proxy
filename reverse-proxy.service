@@ -1,0 +1,21 @@
+[Unit]
+Description=Reverse proxy for openshift-network-playground
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=always
+TimeoutStartSec=180
+TimeoutStopSec=70
+ExecStartPre=-/usr/bin/rm -f %t/%n.ctr-id
+ExecStartPre=/usr/bin/podman build --net host --tag localhost/reverse-proxy /opt/openshift-network-playground/reverse-proxy
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon --name reverse-proxy -d --net host --cap-add NET_ADMIN,NET_RAW localhost/reverse-proxy
+ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target
