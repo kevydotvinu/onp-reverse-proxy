@@ -9,4 +9,5 @@ RUN openssl req -x509 \
                 -days 365 \
                 -subj "/C=IN/ST=Maharashtra/L=Mumbai/O=ONP/CN=onp.ocp.example.local"
 COPY main.go go.mod .
-ENTRYPOINT ["go", "run", "main.go", "-key", "/reverse-proxy.key", "-cert", "/reverse-proxy.crt"]
+ENTRYPOINT ["go", "run", "main.go"]
+CMD ["-key", "/reverse-proxy.key", "-cert", "/reverse-proxy.crt"]
