@@ -1,6 +1,6 @@
 # OpenShift Network Playground Reverse Proxy
 
-A Golang powered reverse proxy for all the clusters that is deployed in OpenShift Network Playground.
+A Golang powered reverse proxy for all the clusters that are deployed in OpenShift Network Playground.
 
 ## Installation
 ```
